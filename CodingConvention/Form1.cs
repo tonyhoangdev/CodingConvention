@@ -20,8 +20,6 @@ namespace CodingConvention
             InitializeComponent();
         }
 
-        // Path file in
-        static string pathFileIn = "";
         // Save file name
         static string fileIn = "";
         // Content of file name;
@@ -78,6 +76,7 @@ namespace CodingConvention
         String contents = "";
         List<string> enums;
         List<string> structs;
+        List<string> funcs;
         List<string> allFuncs = new List<string>();
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
@@ -95,23 +94,63 @@ namespace CodingConvention
                 if (cbCleanLstFuncs.Checked == true)
                 {
                     lstFunctions.Items.Clear();
+                    allFuncs.Clear();
                 }
             }
-
-
-            if (fileIn == "")
+            else
             {
-                MessageBox.Show("Don't have file selected");
                 return;
             }
 
-            // Read File
-            // ReadFile();
-
+            // Add funcs
             enums = ParseEnum(contents);
             structs = ParseStruct(contents);
-            
+            funcs = ParseFuncs(contents);
+            if (enums != null)
+            {
+                allFuncs.AddRange(enums.ToArray());
+            }
+            if (structs != null)
+            {
+                allFuncs.AddRange(structs.ToArray());
+            }
+            if (funcs != null)
+            {
+                allFuncs.AddRange(funcs.ToArray());
+            }
 
+            // add to list
+            lstFunctions.Items.AddRange(allFuncs.ToArray());
+
+            // show funcs in Rich Text Box
+            ShowFuncsInRichTextBox(lstFunctions);           
+
+            // Gen PEX methods
+            if (cbGenPExHAL.Checked)
+            {
+                SavePExHALMethod(allFuncs);
+                SaveListFunctions(allFuncs);
+            }
+            if (cbGenPExDRV.Checked)
+            {
+                SavePExDRVMethod(allFuncs);
+                SaveListFunctions(allFuncs);
+            }
+        }
+
+        private void ShowFuncsInRichTextBox(ListBox funcs)
+        {
+            for (int i = 0; i < lstFunctions.Items.Count; i++)
+            {
+                rtbCode.Find(lstFunctions.Items[i].ToString(), RichTextBoxFinds.MatchCase);
+
+                rtbCode.SelectionFont = new Font("Verdana", 15, FontStyle.Bold);
+                rtbCode.SelectionColor = Color.Red;
+            }
+        }
+
+        private List<string> ParseFuncs(string str)
+        {
             StringBuilder sb = new StringBuilder();
 
             // Gets functions in file
@@ -143,34 +182,7 @@ namespace CodingConvention
                 }
             }
 
-            if (enums != null)
-            {
-                allFuncs.AddRange(enums.ToArray());
-            }
-
-            if (structs != null)
-            {
-                allFuncs.AddRange(structs.ToArray());
-            }
-
-            if (funcs != null)
-            {
-                allFuncs.AddRange(funcs.ToArray());
-            }
-
-            // add to list
-            lstFunctions.Items.AddRange(allFuncs.ToArray());
-
-            string s = sb.ToString();
-
-            for (int i = 0; i < lstFunctions.Items.Count; i++)
-            {
-                rtbCode.Find(lstFunctions.Items[i].ToString(), RichTextBoxFinds.MatchCase);
-
-                rtbCode.SelectionFont = new Font("Verdana", 15, FontStyle.Bold);
-                rtbCode.SelectionColor = Color.Red;
-            }
-
+            return funcs;
         }
 
         private List<string> ParseEnum(string str)
@@ -214,7 +226,6 @@ namespace CodingConvention
 
                 rtbCode.Find(s, RichTextBoxFinds.MatchCase);
                 rtbCode.Focus();
-
             }
         }
 
@@ -322,7 +333,7 @@ namespace CodingConvention
         }
 
         private void lstResult_DrawItem(object sender, DrawItemEventArgs e)
-        {            
+        {
             e.DrawBackground();
             if (lstResult.Items[e.Index].ToString().Contains("False"))
             {
@@ -350,5 +361,81 @@ namespace CodingConvention
 
             e.DrawFocusRectangle();
         }
+
+        private void SaveListFunctions(List<string> lists, string fileName = "listFuncs.txt")
+        {
+            StreamWriter sw = new StreamWriter(fileName);
+            try
+            {
+                using (sw)
+                {
+                    foreach (string item in lists)
+                    {
+                        sw.WriteLine(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private void SavePExDRVMethod(List<string> lists, string fileName = "module_methods.chg")
+        {
+            StreamWriter sw = new StreamWriter(fileName);
+            try
+            {
+                using (sw)
+                {
+                    sw.WriteLine(@"%---- This file was generated by Doxy2Component");
+                    foreach (string item in allFuncs)
+                    {
+                        sw.WriteLine("%:dummy=%setVariable(PEx_ImplementationModules4Method" + item + ",SDK/platform/hal/inc/module_driver.h)");
+                    }
+                    sw.WriteLine(@"%if %get(DeviceName,Exists?) = 'yes' & %get(DeviceName,IsEnabled) = 'yes'");
+                    sw.WriteLine(@"  %:dev = %get(DeviceName,Value)");
+                    foreach (string item in allFuncs)
+                    {
+                        sw.WriteLine("  %setVariable(PEx_ComponentMethodFirstParam4Method" + item + ",%get(DeviceName,Value)_INSTANCE)");
+                    }
+                    sw.WriteLine(@"  %undef dev");
+                    sw.WriteLine("%endif");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private void SavePExHALMethod(List<string> lists, string fileName = "module_hal_methods.chg")
+        {
+            StreamWriter sw = new StreamWriter(fileName);
+            try
+            {
+                using (sw)
+                {
+                    sw.WriteLine(@"%---- This file was generated by Doxy2Component");
+                    foreach (string item in allFuncs)
+                    {
+                        sw.WriteLine("%:dummy=%setVariable(PEx_ImplementationModules4Method" + item + ",SDK/platform/hal/inc/module_hal.h)");
+                    }
+                    sw.WriteLine(@"%if %get(PeriphDevice,Exists?) = 'yes' & %get(PeriphDevice,IsEnabled) = 'yes'");
+                    sw.WriteLine(@"%define! basePointer %get(PeriphDevice,SymbolValue[PeriphDevice_Name])");
+                    foreach (string item in allFuncs)
+                    {
+                        sw.WriteLine("  %setVariable(PEx_ComponentMethodFirstParam4Method" + item + ",%'basePointer')");
+                    }
+                    sw.WriteLine(@"%undef! basePointer");
+                    sw.WriteLine("%endif");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
     }
 }

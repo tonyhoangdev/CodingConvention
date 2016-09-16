@@ -39,6 +39,8 @@
             this.cbCleanLstFuncs = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cbGenPExHAL = new System.Windows.Forms.CheckBox();
+            this.cbGenPExDRV = new System.Windows.Forms.CheckBox();
             this.tab1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -86,6 +88,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.cbGenPExDRV);
+            this.tabPage1.Controls.Add(this.cbGenPExHAL);
             this.tabPage1.Controls.Add(this.btnResultCompare);
             this.tabPage1.Controls.Add(this.lstResult);
             this.tabPage1.Controls.Add(this.btnSelectSRS);
@@ -160,6 +164,26 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // cbGenPExHAL
+            // 
+            this.cbGenPExHAL.AutoSize = true;
+            this.cbGenPExHAL.Location = new System.Drawing.Point(406, 6);
+            this.cbGenPExHAL.Name = "cbGenPExHAL";
+            this.cbGenPExHAL.Size = new System.Drawing.Size(125, 17);
+            this.cbGenPExHAL.TabIndex = 7;
+            this.cbGenPExHAL.Text = "Gen Method Pex Hal";
+            this.cbGenPExHAL.UseVisualStyleBackColor = true;
+            // 
+            // cbGenPExDRV
+            // 
+            this.cbGenPExDRV.AutoSize = true;
+            this.cbGenPExDRV.Location = new System.Drawing.Point(406, 23);
+            this.cbGenPExDRV.Name = "cbGenPExDRV";
+            this.cbGenPExDRV.Size = new System.Drawing.Size(137, 17);
+            this.cbGenPExDRV.TabIndex = 8;
+            this.cbGenPExDRV.Text = "Gen Method Pex Driver";
+            this.cbGenPExDRV.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,6 +211,8 @@
         private System.Windows.Forms.Button btnSelectSRS;
         private System.Windows.Forms.ListBox lstResult;
         private System.Windows.Forms.Button btnResultCompare;
+        private System.Windows.Forms.CheckBox cbGenPExHAL;
+        private System.Windows.Forms.CheckBox cbGenPExDRV;
     }
 }
 
