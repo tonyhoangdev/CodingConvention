@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using Excel;
+using System.Diagnostics;
+using System.Threading;
 
 namespace CodingConvention
 {
@@ -123,7 +125,7 @@ namespace CodingConvention
             lstFunctions.Items.AddRange(allFuncs.ToArray());
 
             // show funcs in Rich Text Box
-            ShowFuncsInRichTextBox(lstFunctions);           
+            ShowFuncsInRichTextBox(lstFunctions);
 
             // Gen PEX methods
             if (cbGenPExHAL.Checked)
@@ -136,6 +138,8 @@ namespace CodingConvention
                 SavePExDRVMethod(allFuncs);
                 SaveListFunctions(allFuncs);
             }
+
+            MessageBox.Show("Loaded file and function.");
         }
 
         private void ShowFuncsInRichTextBox(ListBox funcs)
@@ -437,5 +441,79 @@ namespace CodingConvention
             }
         }
 
+        private void btnFormatCode_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(fileIn))
+            {
+                return;
+            }
+
+            string fileNameOut = Path.GetFileName(fileIn);
+            string dir = Path.GetDirectoryName(fileIn);
+            string fileOut = dir + "\\" + fileNameOut + ".bak";
+            try
+            {
+                File.Copy(fileIn, fileOut, true);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Có một lỗi gì đó xảy ra :P");
+            }
+           
+            string currentDir = Directory.GetCurrentDirectory();
+
+            Thread.Sleep(500);
+            // Uncrustify
+            string argUncrustify = "/c start " + currentDir + "\\uncrustify.exe -c " + currentDir + "\\uncrustify.cfg --replace --no-backup " + fileIn;
+            ProcessStart(argUncrustify);
+
+            Thread.Sleep(500);
+            // ASTYPE
+            string option = @" --style=allman --indent=spaces=4 --indent-switches --indent-cases --indent-preproc-define --indent-preproc-cond --indent-col1-comments --min-conditional-indent=0 --max-instatement-indent=120 --pad-oper --pad-header --align-pointer=middle --align-reference=name --add-brackets --convert-tabs --break-after-logical --lineend=windows --suffix=none ";
+            string arguments = "/c start " + Directory.GetCurrentDirectory() + "\\AStyle.exe" + option + fileIn;
+            ProcessStart(arguments);
+
+            Thread.Sleep(500);
+            // Process step 2
+            fileContents = File.ReadAllText(fileIn);
+            ProcessFormatStep2();
+
+            using (StreamWriter sw = new StreamWriter(fileIn))
+            {
+                sw.Write(fileContents);
+            }
+
+            MessageBox.Show("Format code completed!");   
+        }
+
+        private void ProcessStart(string arguments)
+        {
+            ProcessStartInfo cmdsi = new ProcessStartInfo("cmd.exe");
+            cmdsi.WindowStyle = ProcessWindowStyle.Hidden;
+            cmdsi.Arguments = arguments;
+            using (Process cmd = Process.Start(cmdsi))
+            {
+                cmd.WaitForExit(1000);
+            }
+        }
+
+        private void ProcessFormatStep2()
+        {
+            // Process Define
+            fileContents = Regex.Replace(fileContents, "    #if", "#if");
+            fileContents = Regex.Replace(fileContents, "    #else", "#else");
+            fileContents = Regex.Replace(fileContents, "    #elif", "#elif");
+            fileContents = Regex.Replace(fileContents, "    #endif", "#endif");
+
+            // Process symbol
+            // if/for ((dsf)) => if/for ((sdf))
+            fileContents = Regex.Replace(fileContents, @"\(\s+(?=\w)|\( +(?=\()", "(");
+            // if/for ((dsf) ) => if/for ((sdf))
+            fileContents = Regex.Replace(fileContents, @" +\)", ")");
+            // !defined ( => !defined(
+            fileContents = Regex.Replace(fileContents, @"ed \(", "ed(");
+            // *END * ** -> * END * **
+            fileContents = Regex.Replace(fileContents, @"\* END\*\*\*", @"*END***");
+        }
     }
 }

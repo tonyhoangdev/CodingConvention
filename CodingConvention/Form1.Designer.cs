@@ -33,14 +33,15 @@
             this.lstFunctions = new System.Windows.Forms.ListBox();
             this.tab1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnFormatCode = new System.Windows.Forms.Button();
+            this.cbGenPExDRV = new System.Windows.Forms.CheckBox();
+            this.cbGenPExHAL = new System.Windows.Forms.CheckBox();
             this.btnResultCompare = new System.Windows.Forms.Button();
             this.lstResult = new System.Windows.Forms.ListBox();
             this.btnSelectSRS = new System.Windows.Forms.Button();
             this.cbCleanLstFuncs = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.cbGenPExHAL = new System.Windows.Forms.CheckBox();
-            this.cbGenPExDRV = new System.Windows.Forms.CheckBox();
             this.tab1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -88,6 +89,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnFormatCode);
             this.tabPage1.Controls.Add(this.cbGenPExDRV);
             this.tabPage1.Controls.Add(this.cbGenPExHAL);
             this.tabPage1.Controls.Add(this.btnResultCompare);
@@ -104,6 +106,36 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnFormatCode
+            // 
+            this.btnFormatCode.Location = new System.Drawing.Point(549, 6);
+            this.btnFormatCode.Name = "btnFormatCode";
+            this.btnFormatCode.Size = new System.Drawing.Size(107, 34);
+            this.btnFormatCode.TabIndex = 9;
+            this.btnFormatCode.Text = "Format Code";
+            this.btnFormatCode.UseVisualStyleBackColor = true;
+            this.btnFormatCode.Click += new System.EventHandler(this.btnFormatCode_Click);
+            // 
+            // cbGenPExDRV
+            // 
+            this.cbGenPExDRV.AutoSize = true;
+            this.cbGenPExDRV.Location = new System.Drawing.Point(406, 23);
+            this.cbGenPExDRV.Name = "cbGenPExDRV";
+            this.cbGenPExDRV.Size = new System.Drawing.Size(137, 17);
+            this.cbGenPExDRV.TabIndex = 8;
+            this.cbGenPExDRV.Text = "Gen Method Pex Driver";
+            this.cbGenPExDRV.UseVisualStyleBackColor = true;
+            // 
+            // cbGenPExHAL
+            // 
+            this.cbGenPExHAL.AutoSize = true;
+            this.cbGenPExHAL.Location = new System.Drawing.Point(406, 6);
+            this.cbGenPExHAL.Name = "cbGenPExHAL";
+            this.cbGenPExHAL.Size = new System.Drawing.Size(125, 17);
+            this.cbGenPExHAL.TabIndex = 7;
+            this.cbGenPExHAL.Text = "Gen Method Pex Hal";
+            this.cbGenPExHAL.UseVisualStyleBackColor = true;
             // 
             // btnResultCompare
             // 
@@ -137,6 +169,8 @@
             // cbCleanLstFuncs
             // 
             this.cbCleanLstFuncs.AutoSize = true;
+            this.cbCleanLstFuncs.Checked = true;
+            this.cbCleanLstFuncs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbCleanLstFuncs.Location = new System.Drawing.Point(87, 16);
             this.cbCleanLstFuncs.Name = "cbCleanLstFuncs";
             this.cbCleanLstFuncs.Size = new System.Drawing.Size(113, 17);
@@ -163,26 +197,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // cbGenPExHAL
-            // 
-            this.cbGenPExHAL.AutoSize = true;
-            this.cbGenPExHAL.Location = new System.Drawing.Point(406, 6);
-            this.cbGenPExHAL.Name = "cbGenPExHAL";
-            this.cbGenPExHAL.Size = new System.Drawing.Size(125, 17);
-            this.cbGenPExHAL.TabIndex = 7;
-            this.cbGenPExHAL.Text = "Gen Method Pex Hal";
-            this.cbGenPExHAL.UseVisualStyleBackColor = true;
-            // 
-            // cbGenPExDRV
-            // 
-            this.cbGenPExDRV.AutoSize = true;
-            this.cbGenPExDRV.Location = new System.Drawing.Point(406, 23);
-            this.cbGenPExDRV.Name = "cbGenPExDRV";
-            this.cbGenPExDRV.Size = new System.Drawing.Size(137, 17);
-            this.cbGenPExDRV.TabIndex = 8;
-            this.cbGenPExDRV.Text = "Gen Method Pex Driver";
-            this.cbGenPExDRV.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -213,6 +227,7 @@
         private System.Windows.Forms.Button btnResultCompare;
         private System.Windows.Forms.CheckBox cbGenPExHAL;
         private System.Windows.Forms.CheckBox cbGenPExDRV;
+        private System.Windows.Forms.Button btnFormatCode;
     }
 }
 
