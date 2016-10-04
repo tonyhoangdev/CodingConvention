@@ -483,7 +483,8 @@ namespace CodingConvention
                 sw.Write(fileContents);
             }
 
-            MessageBox.Show("Format code completed!");   
+            MessageBox.Show("Format code completed!");
+            Process.Start("explorer.exe", dir);
         }
 
         private void ProcessStart(string arguments)
