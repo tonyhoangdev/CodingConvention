@@ -459,7 +459,7 @@ namespace CodingConvention
             {
                 MessageBox.Show("Có một lỗi gì đó xảy ra :P");
             }
-           
+
             string currentDir = Directory.GetCurrentDirectory();
 
             Thread.Sleep(500);
@@ -515,6 +515,126 @@ namespace CodingConvention
             fileContents = Regex.Replace(fileContents, @"ed \(", "ed(");
             // *END * ** -> * END * **
             fileContents = Regex.Replace(fileContents, @"\* END\*\*\*", @"*END***");
+        }
+
+        private void btnTestSRS_Click(object sender, EventArgs e)
+        {
+            btnSelectSRS_Click(sender, e);
+            btnTestTM.Enabled = true;
+        }
+
+        /* Requirements, used for tagging the activities/classes */
+        private static Lookup<String, String> testCase;
+        private void CollectTC()
+        {
+            /* Get the requirements excel files associated with the current driver */
+            List<KeyValuePair<string, string>> tcList = new List<KeyValuePair<string, string>>();
+
+            string[] lines = File.ReadAllLines(strTM);
+            string nameTC = "";
+            string id = "";
+
+            foreach (string str in lines)
+            {
+                try
+                {
+                    nameTC = str.Split(':')[0].ToString().Trim();
+                    id = str.Split(':')[1].ToString().Trim();
+                    foreach (string item in id.Split(','))
+                    {
+                        if (!string.IsNullOrWhiteSpace(item))
+                            tcList.Add(new KeyValuePair<string, string>(nameTC, item.Trim()));
+                    }
+                }
+                catch (Exception)
+                {
+                    break;
+                };
+            }
+
+            testCase = (Lookup<string, string>)tcList.ToLookup((item) => item.Key, (item) => item.Value);
+        }
+
+        private void CompareTestandSRS()
+        {
+            List<string> req = new List<string>();
+            SortedDictionary<string, string> reqDic = new SortedDictionary<string, string>();
+            List<string> test = new List<string>();
+            SortedDictionary<string, string> testDic = new SortedDictionary<string, string>();
+
+            int s = requirements.Count;
+            int t = testCase.Count;
+
+            foreach (var item in requirements)
+            {
+                foreach (var i2 in item)
+                {
+                    if (!req.Contains(i2))
+                    {
+                        reqDic.Add(i2, "srs");
+                        req.Add(i2);
+                    }
+                }
+            }
+
+            foreach (var item in testCase)
+            {
+                foreach (var i2 in item)
+                {
+                    if (!test.Contains(i2))
+                    {
+                        testDic.Add(i2, "test");
+                        test.Add(i2);
+                    }
+                }
+            }
+
+            double result = 100.0 * test.Count / req.Count;
+            lbResult.Text = String.Format("Coverage {0:0.00}%", result);
+            if (result == 100)
+            {
+                lbResult.ForeColor = Color.Blue;
+                lstMiss.Items.Clear();
+                lstMiss.Items.Add("NULL");
+            }
+            else
+            {
+                lbResult.ForeColor = Color.Red;
+                lstMiss.Items.Clear();
+
+                foreach (var item in reqDic)
+                {
+                    if (!test.Contains(item.Key))
+                    {
+                        lstMiss.Items.Add(item.Key);
+                    }                    
+                }
+            }
+        }
+
+        string strTM = "";
+        private void btnTestTM_Click(object sender, EventArgs e)
+        {
+            // Create an OpenFileDialog object
+            OpenFileDialog openFile = new OpenFileDialog();
+            // Initialize the filter to look for text files
+            openFile.Filter = "txt File|*.txt|xml File|*.xml|All file|*.*";
+
+            // If the user selected a file, load its contents into the RichTextBox
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                strTM = openFile.FileName;
+
+                CollectTC();
+            }
+
+            btnTestResult.Enabled = true;
+
+        }
+
+        private void btnTestResult_Click(object sender, EventArgs e)
+        {
+            CompareTestandSRS();
         }
     }
 }

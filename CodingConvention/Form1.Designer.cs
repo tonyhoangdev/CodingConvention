@@ -42,8 +42,16 @@
             this.cbCleanLstFuncs = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnTestSRS = new System.Windows.Forms.Button();
+            this.btnTestTM = new System.Windows.Forms.Button();
+            this.btnTestResult = new System.Windows.Forms.Button();
+            this.lbResult = new System.Windows.Forms.Label();
+            this.lstMiss = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabCodingConvention.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbCode
@@ -81,6 +89,7 @@
             this.tabCodingConvention.Controls.Add(this.tabPage1);
             this.tabCodingConvention.Controls.Add(this.tabPage2);
             this.tabCodingConvention.Controls.Add(this.tabPage3);
+            this.tabCodingConvention.Controls.Add(this.tabPage4);
             this.tabCodingConvention.Location = new System.Drawing.Point(12, 12);
             this.tabCodingConvention.Name = "tabCodingConvention";
             this.tabCodingConvention.SelectedIndex = 0;
@@ -199,6 +208,82 @@
             this.tabPage3.Text = "Uml";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.label1);
+            this.tabPage4.Controls.Add(this.lstMiss);
+            this.tabPage4.Controls.Add(this.lbResult);
+            this.tabPage4.Controls.Add(this.btnTestResult);
+            this.tabPage4.Controls.Add(this.btnTestTM);
+            this.tabPage4.Controls.Add(this.btnTestSRS);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1071, 527);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Check SRS and Test code";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // btnTestSRS
+            // 
+            this.btnTestSRS.Location = new System.Drawing.Point(6, 6);
+            this.btnTestSRS.Name = "btnTestSRS";
+            this.btnTestSRS.Size = new System.Drawing.Size(86, 44);
+            this.btnTestSRS.TabIndex = 0;
+            this.btnTestSRS.Text = "Select SRS";
+            this.btnTestSRS.UseVisualStyleBackColor = true;
+            this.btnTestSRS.Click += new System.EventHandler(this.btnTestSRS_Click);
+            // 
+            // btnTestTM
+            // 
+            this.btnTestTM.Enabled = false;
+            this.btnTestTM.Location = new System.Drawing.Point(98, 6);
+            this.btnTestTM.Name = "btnTestTM";
+            this.btnTestTM.Size = new System.Drawing.Size(86, 44);
+            this.btnTestTM.TabIndex = 1;
+            this.btnTestTM.Text = "Select TM";
+            this.btnTestTM.UseVisualStyleBackColor = true;
+            this.btnTestTM.Click += new System.EventHandler(this.btnTestTM_Click);
+            // 
+            // btnTestResult
+            // 
+            this.btnTestResult.Enabled = false;
+            this.btnTestResult.Location = new System.Drawing.Point(190, 6);
+            this.btnTestResult.Name = "btnTestResult";
+            this.btnTestResult.Size = new System.Drawing.Size(75, 44);
+            this.btnTestResult.TabIndex = 2;
+            this.btnTestResult.Text = "Result";
+            this.btnTestResult.UseVisualStyleBackColor = true;
+            this.btnTestResult.Click += new System.EventHandler(this.btnTestResult_Click);
+            // 
+            // lbResult
+            // 
+            this.lbResult.AutoSize = true;
+            this.lbResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbResult.Location = new System.Drawing.Point(285, 14);
+            this.lbResult.Name = "lbResult";
+            this.lbResult.Size = new System.Drawing.Size(127, 24);
+            this.lbResult.TabIndex = 3;
+            this.lbResult.Text = "Coverage: 0%";
+            // 
+            // lstMiss
+            // 
+            this.lstMiss.FormattingEnabled = true;
+            this.lstMiss.Location = new System.Drawing.Point(6, 98);
+            this.lstMiss.Name = "lstMiss";
+            this.lstMiss.Size = new System.Drawing.Size(259, 420);
+            this.lstMiss.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 22);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Miss:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,6 +295,8 @@
             this.tabCodingConvention.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -229,6 +316,13 @@
         private System.Windows.Forms.CheckBox cbGenPExHAL;
         private System.Windows.Forms.CheckBox cbGenPExDRV;
         private System.Windows.Forms.Button btnFormatCode;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button btnTestSRS;
+        private System.Windows.Forms.Button btnTestTM;
+        private System.Windows.Forms.Button btnTestResult;
+        private System.Windows.Forms.Label lbResult;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lstMiss;
     }
 }
 
