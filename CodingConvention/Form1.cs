@@ -244,8 +244,15 @@ namespace CodingConvention
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 srsFileName = openFile.FileName;
+                try
+                {
 
-                CollectRequirements();
+                    CollectRequirements();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("File not correctly format");
+                }
             }
         }
 
@@ -520,7 +527,8 @@ namespace CodingConvention
         private void btnTestSRS_Click(object sender, EventArgs e)
         {
             btnSelectSRS_Click(sender, e);
-            btnTestTM.Enabled = true;
+            if (!string.IsNullOrEmpty(srsFileName))
+                btnTestTM.Enabled = true;
         }
 
         /* Requirements, used for tagging the activities/classes */
@@ -538,6 +546,8 @@ namespace CodingConvention
             {
                 try
                 {
+                    if (string.IsNullOrWhiteSpace(str))
+                        continue;
                     nameTC = str.Split(':')[0].ToString().Trim();
                     id = str.Split(':')[1].ToString().Trim();
                     foreach (string item in id.Split(','))
@@ -607,7 +617,7 @@ namespace CodingConvention
                     if (!test.Contains(item.Key))
                     {
                         lstMiss.Items.Add(item.Key);
-                    }                    
+                    }
                 }
             }
         }
@@ -624,17 +634,23 @@ namespace CodingConvention
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 strTM = openFile.FileName;
-
                 CollectTC();
+                btnTestResult.Enabled = true;
             }
 
-            btnTestResult.Enabled = true;
 
         }
 
         private void btnTestResult_Click(object sender, EventArgs e)
         {
-            CompareTestandSRS();
+            try
+            {
+                CompareTestandSRS();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error! Please correctly files");
+            }
         }
     }
 }
