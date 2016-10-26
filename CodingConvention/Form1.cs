@@ -652,16 +652,12 @@ namespace CodingConvention
             }
 
             bool wrongFile = false;
-            if (test.Count != 0)
+            string tstModule = test[0].Substring(0, test[0].IndexOf('_'));
+            string reqModule = req[0].Substring(0, req[0].IndexOf('_'));
+
+            if (!tstModule.Equals(reqModule))
             {
-                foreach (var item in reqDic)
-                {
-                    if (!test[0].Contains(item.Key))
-                    {
-                        wrongFile = true;
-                        break;
-                    }
-                }
+                wrongFile = true;
             }
 
             double result = 100.0 * test.Count / req.Count;
