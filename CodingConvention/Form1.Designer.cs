@@ -43,12 +43,14 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnTestSRS = new System.Windows.Forms.Button();
-            this.btnTestTM = new System.Windows.Forms.Button();
-            this.btnTestResult = new System.Windows.Forms.Button();
-            this.lbResult = new System.Windows.Forms.Label();
-            this.lstMiss = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lstMiss = new System.Windows.Forms.ListBox();
+            this.lbResult = new System.Windows.Forms.Label();
+            this.btnTestResult = new System.Windows.Forms.Button();
+            this.btnTestTM = new System.Windows.Forms.Button();
+            this.btnTestSRS = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lstCaseReview = new System.Windows.Forms.ListBox();
             this.tabCodingConvention.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -210,6 +212,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.lstCaseReview);
+            this.tabPage4.Controls.Add(this.label2);
             this.tabPage4.Controls.Add(this.label1);
             this.tabPage4.Controls.Add(this.lstMiss);
             this.tabPage4.Controls.Add(this.lbResult);
@@ -224,26 +228,33 @@
             this.tabPage4.Text = "Check SRS and Test code";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // btnTestSRS
+            // label1
             // 
-            this.btnTestSRS.Location = new System.Drawing.Point(6, 6);
-            this.btnTestSRS.Name = "btnTestSRS";
-            this.btnTestSRS.Size = new System.Drawing.Size(86, 44);
-            this.btnTestSRS.TabIndex = 0;
-            this.btnTestSRS.Text = "Select SRS";
-            this.btnTestSRS.UseVisualStyleBackColor = true;
-            this.btnTestSRS.Click += new System.EventHandler(this.btnTestSRS_Click);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 22);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Miss:";
             // 
-            // btnTestTM
+            // lstMiss
             // 
-            this.btnTestTM.Enabled = false;
-            this.btnTestTM.Location = new System.Drawing.Point(98, 6);
-            this.btnTestTM.Name = "btnTestTM";
-            this.btnTestTM.Size = new System.Drawing.Size(86, 44);
-            this.btnTestTM.TabIndex = 1;
-            this.btnTestTM.Text = "Select TM";
-            this.btnTestTM.UseVisualStyleBackColor = true;
-            this.btnTestTM.Click += new System.EventHandler(this.btnTestTM_Click);
+            this.lstMiss.FormattingEnabled = true;
+            this.lstMiss.Location = new System.Drawing.Point(6, 98);
+            this.lstMiss.Name = "lstMiss";
+            this.lstMiss.Size = new System.Drawing.Size(135, 420);
+            this.lstMiss.TabIndex = 4;
+            // 
+            // lbResult
+            // 
+            this.lbResult.AutoSize = true;
+            this.lbResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbResult.Location = new System.Drawing.Point(285, 14);
+            this.lbResult.Name = "lbResult";
+            this.lbResult.Size = new System.Drawing.Size(127, 24);
+            this.lbResult.TabIndex = 3;
+            this.lbResult.Text = "Coverage: 0%";
             // 
             // btnTestResult
             // 
@@ -256,33 +267,44 @@
             this.btnTestResult.UseVisualStyleBackColor = true;
             this.btnTestResult.Click += new System.EventHandler(this.btnTestResult_Click);
             // 
-            // lbResult
+            // btnTestTM
             // 
-            this.lbResult.AutoSize = true;
-            this.lbResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbResult.Location = new System.Drawing.Point(285, 14);
-            this.lbResult.Name = "lbResult";
-            this.lbResult.Size = new System.Drawing.Size(127, 24);
-            this.lbResult.TabIndex = 3;
-            this.lbResult.Text = "Coverage: 0%";
+            this.btnTestTM.Enabled = false;
+            this.btnTestTM.Location = new System.Drawing.Point(98, 6);
+            this.btnTestTM.Name = "btnTestTM";
+            this.btnTestTM.Size = new System.Drawing.Size(86, 44);
+            this.btnTestTM.TabIndex = 1;
+            this.btnTestTM.Text = "Select TM";
+            this.btnTestTM.UseVisualStyleBackColor = true;
+            this.btnTestTM.Click += new System.EventHandler(this.btnTestTM_Click);
             // 
-            // lstMiss
+            // btnTestSRS
             // 
-            this.lstMiss.FormattingEnabled = true;
-            this.lstMiss.Location = new System.Drawing.Point(6, 98);
-            this.lstMiss.Name = "lstMiss";
-            this.lstMiss.Size = new System.Drawing.Size(259, 420);
-            this.lstMiss.TabIndex = 4;
+            this.btnTestSRS.Location = new System.Drawing.Point(6, 6);
+            this.btnTestSRS.Name = "btnTestSRS";
+            this.btnTestSRS.Size = new System.Drawing.Size(86, 44);
+            this.btnTestSRS.TabIndex = 0;
+            this.btnTestSRS.Text = "Select SRS";
+            this.btnTestSRS.UseVisualStyleBackColor = true;
+            this.btnTestSRS.Click += new System.EventHandler(this.btnTestSRS_Click);
             // 
-            // label1
+            // label2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 22);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Miss:";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(147, 64);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(118, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Case review:";
+            // 
+            // lstCaseReview
+            // 
+            this.lstCaseReview.FormattingEnabled = true;
+            this.lstCaseReview.Location = new System.Drawing.Point(147, 98);
+            this.lstCaseReview.Name = "lstCaseReview";
+            this.lstCaseReview.Size = new System.Drawing.Size(139, 420);
+            this.lstCaseReview.TabIndex = 7;
             // 
             // Form1
             // 
@@ -323,6 +345,8 @@
         private System.Windows.Forms.Label lbResult;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lstMiss;
+        private System.Windows.Forms.ListBox lstCaseReview;
+        private System.Windows.Forms.Label label2;
     }
 }
 

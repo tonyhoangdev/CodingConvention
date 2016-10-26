@@ -260,11 +260,14 @@ namespace CodingConvention
         private static Lookup<String, String> requirements;
         /* Requirements, used for tagging the req level and get function name */
         private static Lookup<String, String> reqLevelFuncs;
+        /* Verify Review, used for tagging the req id is review type */
+        private static Lookup<String, String> verifyReviews;
         private static void CollectRequirements()
         {
             /* Get the requirements excel files associated with the current driver */
             List<KeyValuePair<string, string>> reqList = new List<KeyValuePair<string, string>>();
             List<KeyValuePair<string, string>> reqListLevel = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> verifyReview = new List<KeyValuePair<string, string>>();
 
             worksheet reqSheet = Workbook.Worksheets(srsFileName).ToArray()[0];
             for (short i = 1; i < reqSheet.Rows.Count(); i++)
@@ -272,8 +275,9 @@ namespace CodingConvention
                 Cell reqID = reqSheet.Rows[i].Cells[0];
                 Cell function = reqSheet.Rows[i].Cells[4];
                 Cell reqLevel = reqSheet.Rows[i].Cells[1];
+                Cell review = reqSheet.Rows[i].Cells[9];
 
-                if (function == null || reqID == null || reqLevel == null)
+                if (function == null || reqID == null || reqLevel == null || verifyReview == null)
                     break;
 
                 string strFunc = function.Text.Trim();
@@ -288,10 +292,17 @@ namespace CodingConvention
                 {
                     reqListLevel.Add(new KeyValuePair<string, string>(reqLevel.Text, strFunc));
                 }
+
+                if (review.Text.Equals("Review"))
+                {
+                    verifyReview.Add(new KeyValuePair<string, string>(reqID.Text, "Review"));
+                }
+
             }
 
             requirements = (Lookup<string, string>)reqList.ToLookup((item) => item.Key, (item) => item.Value);
             reqLevelFuncs = (Lookup<string, string>)reqListLevel.ToLookup((item) => item.Key, (item) => item.Value);
+            verifyReviews = (Lookup<string, string>)verifyReview.ToLookup((item) => item.Key, (item) => item.Value);
         }
 
         List<bool> resultCompare = new List<bool>();
@@ -571,9 +582,11 @@ namespace CodingConvention
             SortedDictionary<string, string> reqDic = new SortedDictionary<string, string>();
             List<string> test = new List<string>();
             SortedDictionary<string, string> testDic = new SortedDictionary<string, string>();
+            SortedDictionary<string, string> review = new SortedDictionary<string, string>();
 
             int s = requirements.Count;
             int t = testCase.Count;
+            int r = verifyReviews.Count;
 
             foreach (var item in requirements)
             {
@@ -599,7 +612,63 @@ namespace CodingConvention
                 }
             }
 
+            // remove case review
+            lstCaseReview.Items.Clear();
+            if (verifyReviews.Count != 0)
+            {
+                foreach (var item in verifyReviews)
+                {
+                    lstCaseReview.Items.Add(item.Key);
+                }
+
+                List<string> warning = new List<string>();
+                foreach (var item in verifyReviews)
+                {
+                    if (test.Contains(item.Key))
+                    {
+                        warning.Add(item.Key);
+                    }
+
+                    if (req.Contains(item.Key))
+                    {
+                        req.Remove(item.Key);
+                        reqDic.Remove(item.Key);
+                    }
+                }
+                if (warning.Count != 0)
+                {
+                    string ss = "";
+                    foreach (var item in warning)
+                    {
+                        ss += item + " ";
+                    }
+
+                    MessageBox.Show("Test case contains req of review " + ss);
+                }
+            }
+            else
+            {
+                lstCaseReview.Items.Add("NULL");
+            }
+
+            bool wrongFile = false;
+            if (test.Count != 0)
+            {
+                foreach (var item in reqDic)
+                {
+                    if (!test[0].Contains(item.Key))
+                    {
+                        wrongFile = true;
+                        break;
+                    }
+                }
+            }
+
             double result = 100.0 * test.Count / req.Count;
+            if (wrongFile)
+            {
+                result = 0;
+            }
             lbResult.Text = String.Format("Coverage {0:0.00}%", result);
             if (result == 100)
             {
@@ -620,6 +689,8 @@ namespace CodingConvention
                     }
                 }
             }
+
+
         }
 
         string strTM = "";
